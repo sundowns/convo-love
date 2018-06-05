@@ -1,0 +1,6 @@
+- 3 cards in a hand (beginning at least)
+- Very neutral cards to start with, let you BUILD to be rude/kind/romantic/sleezy/etc
+- Conversation points/Mana system?
+- Burn entire hand each time? Save UP TO 1 card maybe?
+- Custom code block for crazy cards
+- Affect 'opponents' various stats? Rage/Joy/Sadness/Frustration/Love/promiscuity/
