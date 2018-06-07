@@ -1,36 +1,20 @@
 local cards = {}
-cards.list = {}
+cards.list = {
+   ["Disagree"] = Card("Disagree"),
+   ["Agree"] = Card("Agree"),
+   ["Stall For Time"] = Card("Stall For Time")
+}
 
-function cards.clone(orig)
-    local orig_type = type(orig)
-    local copy
-    if orig_type == 'table' then
-        copy = {}
-        for orig_key, orig_value in next, orig, nil do
-            copy[self.clone(orig_key)] = self.clone(orig_value)
-        end
-        setmetatable(copy, self.clone(getmetatable(orig)))
-    else -- number, string, boolean, etc
-        copy = orig
-    end
-    return copy
-end
-
-function cards.create(key)
+-- Public
+function cards.get(key)
    if cards.list[key] ~= nil then
-      return cards.clone(cards.list[key])
+      return cards.list[key]
    else
       assert(false, "Attempted to create card with nonexistent key: "..key)
    end
 end
 
---google LUA modules, what am i doing wrong?
-cards.list["Polite Compliment"] = new Card("Polite Compliment")
-cards.list["Please/Thank you"] = new Card("Please/Thank you")
-cards.list["Disagree"] = new Card("Disagree")
-cards.list["Agree"] = new Card("Agree")
-cards.list["Greeting"] = new Card("Greeting")
-cards.list["Small Talk"] = new Card("Small Talk")
-cards.list["Clever Riddle"] = new Card("Clever Riddle")
+--https://stackoverflow.com/questions/22321277/randomly-select-a-key-from-a-table-in-lua#28006336
+--^ Random selection function (basic, will expand based on a pool!)
 
 return cards
