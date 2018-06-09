@@ -28,5 +28,6 @@ end
 function love.keypressed(key, scancode, isrepeat)
    if key == "space" then
       deck:shuffle()
+      deck:peek().actionHandler("debug")
    end
 end

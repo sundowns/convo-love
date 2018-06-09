@@ -4,6 +4,8 @@
    particularly with Love2D.
 ]]
 
+--TODO: Modularise this before it gets massive (filesystem, maths, debug, etc)
+
 local util = {}
 
 function util.roundToNthDecimal(num, n)
@@ -33,11 +35,6 @@ function util.concatTables(t1,t2)
     return t1
 end
 
-function util.fileExists(name)
-   local f=io.open(name,"r")
-   if f~=nil then io.close(f) return true else return false end
-end
-
 function util.withinVariance(val1, val2, variance)
   local diff = math.abs(val1 - val2)
   if diff < variance then
@@ -61,6 +58,15 @@ function util.log(text)
     if debug then
         print(text)
     end
+end
+
+function util.fileExists(name)
+   local f=io.open(name,"r")
+   if f~=nil then io.close(f) return true else return false end
+end
+
+function util.getLuaFileName(url)
+   return string.gsub(url, ".lua", "")
 end
 
 return util

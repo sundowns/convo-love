@@ -4,12 +4,12 @@ Deck = Class{
       self.used = {}
    end;
    populateStartingDeck = function(self)
-      self:addCardToActive(CardManager.get("Agree"))
-      self:addCardToActive(CardManager.get("Agree"))
-      self:addCardToActive(CardManager.get("Disagree"))
-      self:addCardToActive(CardManager.get("Disagree"))
-      self:addCardToActive(CardManager.get("Stall For Time"))
-      self:addCardToActive(CardManager.get("Stall For Time"))
+      self:addCardToActive(CardManager.get("agree"))
+      self:addCardToActive(CardManager.get("agree"))
+      self:addCardToActive(CardManager.get("disagree"))
+      self:addCardToActive(CardManager.get("disagree"))
+      self:addCardToActive(CardManager.get("stall-for-time"))
+      self:addCardToActive(CardManager.get("stall-for-time"))
       self:shuffle(3)
    end;
    addCardToActive = function(self, card)
@@ -39,4 +39,11 @@ Deck = Class{
       self.cards = util.concatTables(self.cards, self.used)
       self:shuffle()
    end;
+   peek = function(self)
+      if self.cards[1] then
+         return self.cards[1]
+      else
+         return nil
+      end
+   end
 }
