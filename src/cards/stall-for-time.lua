@@ -3,7 +3,7 @@ local NAME = "Stall For Time"
 local ACTION_HANDLER = function(event)
    assert(event, "Card action handler received nil event")
    if event == 'debug' then
-      print(NAME)
+      print(NAME.. " actioned")
    end
 end
 

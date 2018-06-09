@@ -1,4 +1,4 @@
-local NAME = "Disagree"
+local NAME = "Greeting"
 
 local ACTION_HANDLER = function(event)
    assert(event, "Card action handler received nil event")

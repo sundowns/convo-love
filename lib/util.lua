@@ -7,6 +7,7 @@
 --TODO: Modularise this before it gets massive (filesystem, maths, debug, etc)
 
 local util = {}
+util.love = {}
 
 function util.roundToNthDecimal(num, n)
   local mult = 10^(n or 0)
@@ -67,6 +68,20 @@ end
 
 function util.getLuaFileName(url)
    return string.gsub(url, ".lua", "")
+end
+
+function util.love.resetColour()
+   love.graphics.setColor(255,255,255,255)
+end
+
+function util.love.renderStats()
+   local stats = love.graphics.getStats()
+   love.graphics.print("texture memory (MB): ".. stats.texturememory / 1024 / 1024, 3, 60)
+   love.graphics.print("drawcalls: ".. stats.drawcalls, 3, 80)
+   love.graphics.print("canvasswitches: ".. stats.canvasswitches , 3, 100)
+   love.graphics.print("images loaded: ".. stats.images, 3, 120)
+   love.graphics.print("canvases loaded: ".. stats.canvases, 3, 140)
+   love.graphics.print("fonts loaded: ".. stats.fonts, 3, 160)
 end
 
 return util
