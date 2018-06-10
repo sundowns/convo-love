@@ -1,20 +1,26 @@
 love.filesystem.setRequirePath( love.filesystem.getRequirePath()..";lib/?.lua;" )
-debug = false
 
-Util = require "lib.util"
-Class = require "lib.class"
-require("src.class.card")
-CardManager = require "src.cards"
-require("src.class.deck")
-require("src.class.hand")
-
-local deck;
-local hand;
+local deck = {}
+local hand = {}
 
 function love.load(t)
-   hand = Hand()
+   debug = false
+   Util = require "lib.util"
+   Class = require "lib.class"
+   Gamestate = require "lib.gamestate"
+   constants = require ("src.const")
+   require("src.class.card")
+   CardManager = require "src.cards"
+   require("src.class.deck")
+   require("src.class.hand")
+   --require("src.conversation")
+
    deck = Deck()
    deck:populateStartingDeck();
+   hand = Hand()
+   hand:drawToMax(deck)
+   --Gamestate.registerEvents()
+   --Gamestate.switch(conversation)
 end
 
 function love.update(dt)
