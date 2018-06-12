@@ -16,6 +16,10 @@ end
 
 function util.printTable(table, name)
   print("==================")
+  if (type(table) ~= "table") then
+      assert(false,"Attempted to print NON-TABLE TYPE: "..type(table))
+      return
+   end
   if name then print("Printing table: " .. name) end
   for k, v in pairs(table) do
     if type(v) == "table" then
@@ -61,7 +65,9 @@ function util.log(text)
     end
 end
 
+--Only use this outside of Love2d scope
 function util.fileExists(name)
+   if love then assert(false, "Not to be used in love games, use love.filesystem.getInfo") end
    local f=io.open(name,"r")
    if f~=nil then io.close(f) return true else return false end
 end

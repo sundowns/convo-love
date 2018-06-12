@@ -7,4 +7,13 @@ Opponent = Class {
          self.qualities[v] = 0
       end
    end;
+   --x and y origins to render relative to
+   render = function(self, x, y)
+      local count = 0
+      love.graphics.setColor(255,0,255)
+      for k,v in pairs(self.qualities) do
+         love.graphics.print(k..": "..v, x, y+count*15)
+         count = count+1
+      end
+   end;
 }

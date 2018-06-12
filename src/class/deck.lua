@@ -54,25 +54,26 @@ Deck = Class{
       end
    end;
    --Renderer function
-   render = function(self)
+   --x and y origins to render relative to
+   render = function(self, x, y)
       local count = 0
       local lastActiveYOffset = 0
       love.graphics.setColor(0, 255, 0)
       for k,card in pairs(self.cards) do
-         love.graphics.print(card.name, 10, 5+count*15)
+         love.graphics.print(card.name, x, y+count*15)
          count = count + 1
          lastActiveYOffset = count*15
       end
 
       --draw last offset(top card)
       love.graphics.setColor(255,255,0)
-      love.graphics.circle('fill', 3, lastActiveYOffset, 3)
+      love.graphics.circle('fill', x+3, y+lastActiveYOffset, 3)
 
       -- Draw used pile
       love.graphics.setColor(255, 0, 0)
       count = 0
       for k,card in pairs(self.used) do
-         love.graphics.print(card.name, love.graphics.getWidth()-100, 5+count*15)
+         love.graphics.print(card.name, x+love.graphics.getWidth()-100, y+count*15)
          count = count + 1
       end
    end;

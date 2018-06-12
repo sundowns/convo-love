@@ -17,12 +17,12 @@ Hand = Class{
          return table.remove(self.cards, 1)
       end
    end;
-   --Renderer function
-   render = function(self)
+   --x and y origins to render relative to
+   render = function(self, x, y)
       local count = 0
       love.graphics.setColor(255, 255, 0)
       for k,card in pairs(self.cards) do
-         love.graphics.print(card.name, love.graphics.getWidth()/2-100, 5+count*15)
+         love.graphics.print(card.name, x, y+count*15)
          count = count + 1
       end
    end;
