@@ -22,7 +22,6 @@ local function init()
       local loaded, size = love.filesystem.load(CARDS_DIRECTORY .. file)
       cards.list[name] = loaded()
    end
-   Util.printTable(cards.list)
 end
 
 --https://stackoverflow.com/questions/22321277/randomly-select-a-key-from-a-table-in-lua#28006336

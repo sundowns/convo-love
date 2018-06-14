@@ -16,7 +16,11 @@ end
 
 function util.printTable(table, name)
   print("==================")
-  if (type(table) ~= "table") then
+  if not table then
+      print("<EMPTY TABLE>")
+      return
+   end
+  if type(table) ~= "table" then
       assert(false,"Attempted to print NON-TABLE TYPE: "..type(table))
       return
    end

@@ -1,10 +1,26 @@
 local NAME = "Greeting"
 
-local ACTION_HANDLER = function(event)
+local DELTAS = {
+   ["Patience"]   = 0,
+   ["Joy"]        = 1,
+   ["Sadness"]    = 1,
+   ["Anger"]      = 1,
+   ["Love"]       = 1,
+   ["Pride"]      = 1,
+   ["Boredom"]    = 1,
+   ["Trust"]      = 1
+}
+
+local ACTION_HANDLER = function(event, data)
    assert(event, "Card action handler received nil event")
-   if event == 'debug' then
-      print(NAME.. " actioned")
+
+   print(NAME.. ":"..event)
+
+   if event == CARD_ACTION.activate then
+      Util.printTable(data)
+   elseif event == CARD_ACTION.debug then
+   elseif event == CARD_ACTION.tick then
    end
 end
 
-return Card(NAME, ACTION_HANDLER)
+return Card(NAME, ACTION_HANDLER, DELTAS)

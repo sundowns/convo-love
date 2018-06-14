@@ -14,7 +14,6 @@ function conversation:enter(previous, values)
    opponent = values.opponent
    hand = Hand()
    hand:drawToMax(deck)
-   Util.printTable(opponent)
 end;
 
 function conversation:update(dt)
@@ -28,7 +27,13 @@ function conversation:draw()
    hand:render(love.graphics.getWidth()/2-100, 5)
 
    opponent:render(10, love.graphics.getHeight()/2)
-end
+end;
+
+function conversation:playCard(card)
+   if not card then print("[ERROR] Attempted to play null card") return end
+   card:activate({opponent = opponent})
+   deck:addCardToUsed(card)
+end;
 
 function conversation:keypressed(key)
    if key == "space" then
@@ -39,8 +44,6 @@ function conversation:keypressed(key)
       deck:reset()
    elseif key == "p" then
       local card = hand:discard()
-      if not card then return end
-      card.actionHandler("debug")
-      deck:addCardToUsed(card)
+      conversation:playCard(card)
    end
 end

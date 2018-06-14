@@ -16,4 +16,12 @@ Opponent = Class {
          count = count+1
       end
    end;
+   applyQualityDeltas = function(self, deltas)
+      for k,v in pairs(self.qualities) do
+         if deltas[k] then
+            print("Modifying ".. k .. " by " .. deltas[k])
+            self.qualities[k] = self.qualities[k] + deltas[k]
+         end
+      end
+   end;
 }
