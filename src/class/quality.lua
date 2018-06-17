@@ -1,15 +1,15 @@
-local QUALITY_MAX = 100
-local QUALITY_MIN = 0
-
 Quality = Class {
-   init = function(self, name, startValue)
+   init = function(self, name, startValue, min, max)
       self.name = name
-      self.minValue = QUALITY_MIN
-      self.startValue = startValue
-      self.value = startValue
-      self.maxValue = QUALITY_MAX
+      self.minValue = min or constants.DEFAULTS.QUALITY_MIN
+      self.maxValue = max or constants.DEFAULTS.QUALITY_MAX
+      self.startValue = startValue or 0
+      self.value = self.startValue
    end;
-   update = function(self, delta)
+   updateBy = function(self, delta)
       self.value = self.value + delta
+   end;
+   set = function(self, absolute)
+      self.value = absolute
    end;
 }

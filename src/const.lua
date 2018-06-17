@@ -1,5 +1,9 @@
 return {
-   STARTING_HAND_SIZE = 5,
+   DEFAULTS = {
+      QUALITY_MAX = 100,
+      QUALITY_MIN = 0,
+      HAND_SIZE = 3
+   },
    QUALITIES = {
       "Patience",
       "Joy",

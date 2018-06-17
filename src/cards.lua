@@ -12,8 +12,6 @@ function cards.get(key)
    end
 end
 
-
-
 local function init()
    local files = love.filesystem.getDirectoryItems(CARDS_DIRECTORY)
    for k, file in ipairs(files) do

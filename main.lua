@@ -8,6 +8,7 @@ function love.load(t)
    Class = require "lib.class"
    GamestateManager = require "lib.gamestate"
    constants = require "src.const"
+   require("src.class.quality")
    require("src.class.card")
    CardManager = require "src.cards"
    require("src.class.deck")

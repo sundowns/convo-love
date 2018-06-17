@@ -1,7 +1,7 @@
 Hand = Class{
    init = function(self)
       self.cards = {}
-      self.maxHandSize = constants.STARTING_HAND_SIZE
+      self.maxHandSize = constants.DEFAULTS.HAND_SIZE
    end;
    add = function(self, card)
       self.cards[#self.cards+1] = card

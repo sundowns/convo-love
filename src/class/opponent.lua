@@ -4,7 +4,7 @@ Opponent = Class {
       self.dialogue = {}
       self.qualities = {}
       for i,v in ipairs(constants.QUALITIES) do
-         self.qualities[v] = 0
+         self.qualities[v] = Quality(v, 0)
       end
    end;
    --x and y origins to render relative to
@@ -12,7 +12,7 @@ Opponent = Class {
       local count = 0
       love.graphics.setColor(255,0,255)
       for k,v in pairs(self.qualities) do
-         love.graphics.print(k..": "..v, x, y+count*15)
+         love.graphics.print(k..": "..v.value, x, y+count*15)
          count = count+1
       end
    end;
@@ -20,7 +20,7 @@ Opponent = Class {
       for k,v in pairs(self.qualities) do
          if deltas[k] then
             print("Modifying ".. k .. " by " .. deltas[k])
-            self.qualities[k] = self.qualities[k] + deltas[k]
+            self.qualities[k]:updateBy(deltas[k])
          end
       end
    end;
