@@ -42,8 +42,8 @@ function conversation:keypressed(key)
       deck:shuffle()
    elseif key == "r" then
       deck:reset()
-   elseif key == "p" then
-      local card = hand:discard()
+   elseif tonumber(key) then
+      local card = hand:remove(tonumber(key))
       conversation:playCard(card)
    end
 end

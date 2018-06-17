@@ -12,17 +12,17 @@ Hand = Class{
          self:add(deck:draw())
       end
    end;
-   discard = function(self)
-      if (#self.cards > 0) then
-         return table.remove(self.cards, 1)
+   remove = function(self, index)
+      if #self.cards > 0 and self.cards[index] then
+         return table.remove(self.cards, index)
       end
    end;
    --x and y origins to render relative to
    render = function(self, x, y)
       local count = 0
       love.graphics.setColor(255, 255, 0)
-      for k,card in pairs(self.cards) do
-         love.graphics.print(card.name, x, y+count*15)
+      for i,card in ipairs(self.cards) do
+         love.graphics.print(i.." "..card.name, x, y+count*15)
          count = count + 1
       end
    end;

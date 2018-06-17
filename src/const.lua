@@ -1,5 +1,5 @@
 return {
-   STARTING_HAND_SIZE = 3,
+   STARTING_HAND_SIZE = 5,
    QUALITIES = {
       "Patience",
       "Joy",
