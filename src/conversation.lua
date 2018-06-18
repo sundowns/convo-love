@@ -24,7 +24,7 @@ function conversation:update(dt)
 end;
 
 function conversation:draw()
-   love.graphics.setColor(0,255,255)
+   love.graphics.setColor(0,1,1)
    if turn:stateIs("PLAY") then
       love.graphics.print("[1,2,3..] Play from hand", 0, love.graphics.getHeight()-20)
    elseif turn:stateIs("DISCARD") then
