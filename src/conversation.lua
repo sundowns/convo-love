@@ -12,7 +12,7 @@ function conversation:init()
 end;
 
 function conversation:enter(previous, values)
-   --turn = Turn(values.playerFirst)
+   turn = Turn(values.playerFirst)
    deck = values.deck
    opponent = values.opponent
    hand = Hand()
@@ -20,35 +20,64 @@ function conversation:enter(previous, values)
 end;
 
 function conversation:update(dt)
+   turn:update(dt, {deck=deck,hand=hand,opponent=opponent,turn=turn})
 end;
 
 function conversation:draw()
    love.graphics.setColor(0,255,255)
-   love.graphics.print("[s] Shuffle - [space] Draw hand - [1,2,3..] Play from hand - [r] Reset deck", 0, love.graphics.getHeight()-20)
+   if turn:stateIs("PLAY") then
+      love.graphics.print("[1,2,3..] Play from hand", 0, love.graphics.getHeight()-20)
+   elseif turn:stateIs("DISCARD") then
+      love.graphics.print("[1,2,3..] Discard down to", 0, love.graphics.getHeight()-20)
+   end
 
    deck:render(10, 5)
    hand:render(love.graphics.getWidth()/2-100, 5)
-
    opponent:render(10, love.graphics.getHeight()/2)
+   turn:render(love.graphics.getWidth()/2, love.graphics.getHeight()/2-20)
 end;
 
-function conversation:playCard(card)
+function conversation:playCard(index)
+   local card = hand:remove(index)
    if not card then print("[ERROR] Attempted to play null card") return end
    card:activate({opponent = opponent})
    deck:addCardToUsed(card)
 end;
 
+function conversation:discardDownTo(index)
+   local card = hand:remove(index)
+   if not card then print("[ERROR] Attempted to discard down to null card") return end
+
+   hand:forAll(function(i, params)
+      params.deck:addCardToUsed(params.hand:remove(i))
+   end, {deck=deck,hand=hand})
+
+   hand:add(card)
+end;
+
+function conversation:nextPhase()
+   turn:next({deck=deck,hand=hand,opponent=opponent,turn=turn})
+end;
+
 function conversation:keypressed(key)
-   --if turn.state == "PLAY" then
+   if showDebug then
       if key == "space" then
          hand:drawToMax(deck)
       elseif key == "s" then
          deck:shuffle()
       elseif key == "r" then
          deck:reset()
-      elseif tonumber(key) then
-         local card = hand:remove(tonumber(key))
-         conversation:playCard(card)
       end
-   --end
+   end
+
+   if turn:stateIs("PLAY") then
+      if tonumber(key) then
+         conversation:playCard(tonumber(key))
+         conversation:nextPhase()
+      end
+   elseif turn:stateIs("DISCARD") then
+      if tonumber(key) then
+         conversation:discardDownTo(tonumber(key))
+      end
+   end
 end

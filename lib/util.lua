@@ -81,10 +81,12 @@ function util.getLuaFileName(url)
 end
 
 function util.love.resetColour()
-   love.graphics.setColor(255,255,255,255)
+   love.graphics.setColor(1,1,1,1)
 end
 
-function util.love.renderStats()
+function util.love.renderStats(x, y)
+   if not x then x = 0 end
+   if not y then y = 0 end
    local stats = love.graphics.getStats()
    love.graphics.print("texture memory (MB): ".. stats.texturememory / 1024 / 1024, 3, 60)
    love.graphics.print("drawcalls: ".. stats.drawcalls, 3, 80)

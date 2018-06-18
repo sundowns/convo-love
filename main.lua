@@ -6,6 +6,7 @@ function love.load(t)
    showDebug = false
    Util = require "lib.util"
    Class = require "lib.class"
+   Timer = require "lib.timer"
    GamestateManager = require "lib.gamestate"
    constants = require "src.const"
    require("src.class.quality")
@@ -23,6 +24,7 @@ function love.load(t)
 end
 
 function love.update(dt)
+   Timer.update(dt)
 end
 
 function love.draw()
@@ -34,7 +36,7 @@ end
 
 function love.keypressed(key, scancode, isrepeat)
    if key == "f1" then
-      showDebug = not showDebugshowDebug
+      showDebug = not showDebug
    elseif key == "f5" then
       --https://www.lua.org/manual/5.1/manual.html#pdf-debug.debug
       debug.debug()
