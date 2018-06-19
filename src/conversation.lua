@@ -21,12 +21,16 @@ end;
 
 function conversation:update(dt)
    turn:update(dt, {deck=deck,hand=hand,opponent=opponent,turn=turn})
+   --[[Check for win conditions? (we could do this in our traits,
+   but we might be better off pooling them and doing it in conversation).
+   e.g. what if we want to prevent one trait taking effect?
+   ]]
 end;
 
 function conversation:draw()
    love.graphics.setColor(0,1,1)
    if turn:stateIs("PLAY") then
-      love.graphics.print("[1,2,3..] Play from hand", 0, love.graphics.getHeight()-20)
+      love.graphics.print("[1,2,3..] Play from hand", love.graphics.getWidth()/2, love.graphics.getHeight()/2)
    elseif turn:stateIs("DISCARD") then
       love.graphics.print("[1,2,3..] Discard down to", 0, love.graphics.getHeight()-20)
    end
@@ -40,7 +44,8 @@ end;
 function conversation:playCard(index)
    local card = hand:remove(index)
    if not card then print("[ERROR] Attempted to play null card") return end
-   card:activate({opponent = opponent})
+   -- Likely to add more data as we add new cards, but lets not go overboard yet
+   card:activate({opponent=opponent, turn=turn})
    deck:addCardToUsed(card)
 end;
 

@@ -2,22 +2,23 @@ local NAME = "Greeting"
 
 local DELTAS = {
    ["Patience"]   = 0,
-   ["Joy"]        = 1,
-   ["Sadness"]    = 1,
-   ["Anger"]      = 1,
-   ["Love"]       = 1,
-   ["Pride"]      = 1,
-   ["Boredom"]    = 1,
-   ["Trust"]      = 1
+   ["Happiness"]  = 0,
+   ["Anger"]      = 0,
+   ["Love"]       = 0,
+   ["Pride"]      = 0,
+   ["Trust"]      = 0
 }
 
 local ACTION_HANDLER = function(event, data)
    assert(event, "Card action handler received nil event")
 
-   print(NAME.. ":"..event)
-
    if event == CARD_ACTION.activate then
-      Util.printTable(data)
+      assert(data.turn)
+      assert(data.opponent)
+      if data.turn.turnCount == 1 then
+         data.opponent.qualities["Patience"]:updateBy(5)
+         data.opponent.qualities["Trust"]:updateBy(2)
+      end
    elseif event == CARD_ACTION.debug then
    elseif event == CARD_ACTION.tick then
    end

@@ -29,8 +29,8 @@ end
 
 function love.draw()
    if showDebug then
-      Util.love.resetColour()
-      Util.love.renderStats()
+      Util.l.resetColour()
+      Util.l.renderStats()
     end
 end
 
@@ -40,6 +40,8 @@ function love.keypressed(key, scancode, isrepeat)
    elseif key == "f5" then
       --https://www.lua.org/manual/5.1/manual.html#pdf-debug.debug
       debug.debug()
+   elseif key == "escape" then
+      love.event.quit("restart")
    end
 end
 

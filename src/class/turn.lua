@@ -9,18 +9,13 @@ TurnState = Class {
       self.exitCB = callbacks.exit
    end;
    update = function(self, dt, params)
-      if not self.updateCB then return end
-      self.updateCB(dt, params)
+      if self.updateCB then self.updateCB(dt, params) end
    end;
    enter = function(self, params)
-      print("[ENTER] "..self.key)
-      if not self.enterCB then return end
-      self.enterCB(params)
+      if self.enterCB then self.enterCB(params) end
    end;
    exit = function(self, params)
-      print("[EXIT] "..self.key)
-      if not self.exitCB then return end
-      self.exitCB(params)
+      if self.exitCB then self.exitCB(params) end
    end;
 }
 
@@ -66,11 +61,14 @@ setmetatable(STATES, stateMeta)
 
 Turn = Class {
    init = function(self, playerFirst)
+      self.turnCount = 1
       --By default, player goes first, but this can be overriden.
       if playerFirst == nil then playerFirst = true end
       if (playerFirst) then
          self.state = STATES["PLAY"]
       else
+         --Enemy first is an exception, an 'ambush' or something more contextually appropriate
+         self.turnCount = 0
          self.state = STATES["OPPONENT"]
       end
    end;
@@ -81,11 +79,12 @@ Turn = Class {
          self.state = self.state + 1
       else
          self.state = 1
+         self.turnCount = self.turnCount + 1
       end
 
       --TODO: REMOVE--> Just mocking out opponent turn for now
       if self.state == STATES["OPPONENT"] then
-         Timer.after(3, function()
+         Timer.after(1, function()
             self:next(params)
          end)
       end
@@ -100,7 +99,7 @@ Turn = Class {
    end;
    render = function(self, x, y)
       love.graphics.setColor(0,0.6,1)
-      love.graphics.print(self:getStateKey(), x, y)
+      love.graphics.print("TURN "..self.turnCount..": "..self:getStateKey(), x, y)
    end;
    update = function(self, dt, params)
       STATES[self.state]:update(dt, params)

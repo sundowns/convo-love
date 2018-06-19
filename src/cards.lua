@@ -3,7 +3,7 @@ local cards = {}
 local CARDS_DIRECTORY = "src/cards/"
 cards.list = {}
 
--- Public
+-- Our 'cards' are actually just references to their
 function cards.get(key)
    if cards.list[key] ~= nil then
       return cards.list[key]
@@ -16,7 +16,7 @@ local function init()
    local files = love.filesystem.getDirectoryItems(CARDS_DIRECTORY)
    for k, file in ipairs(files) do
       local size
-      local name = Util.getLuaFileName(file)
+      local name = Util.f.getLuaFileName(file)
       local loaded, size = love.filesystem.load(CARDS_DIRECTORY .. file)
       cards.list[name] = loaded()
    end

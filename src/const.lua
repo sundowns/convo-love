@@ -6,12 +6,10 @@ return {
    },
    QUALITIES = {
       "Patience",
-      "Joy",
-      "Sadness",
+      "Happiness",
       "Anger",
       "Love",
       "Pride",
-      "Boredom",
       "Trust"
    }
 }

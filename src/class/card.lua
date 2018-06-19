@@ -20,7 +20,7 @@ Card = Class{
    description = function(self)
       print("I am "..self.name)
    end;
-   --context is an object containing anything needed to execute. For now, the opponent.
+   --context is an object containing anything needed to execute.
    activate = function(self, context)
       assert(context.opponent, self.name.." - received non-existent opponent to card activation function")
 

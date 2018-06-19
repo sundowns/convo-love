@@ -4,13 +4,13 @@ Deck = Class{
       self.used = {}
    end;
    populateStartingDeck = function(self)
-      self:addCardToActive(CardManager.get("agree"))
-      self:addCardToActive(CardManager.get("agree"))
-      self:addCardToActive(CardManager.get("disagree"))
-      self:addCardToActive(CardManager.get("disagree"))
-      self:addCardToActive(CardManager.get("stall-for-time"))
-      self:addCardToActive(CardManager.get("stall-for-time"))
       self:addCardToActive(CardManager.get("greeting"))
+      self:addCardToActive(CardManager.get("agree"))
+      self:addCardToActive(CardManager.get("agree"))
+      self:addCardToActive(CardManager.get("disagree"))
+      self:addCardToActive(CardManager.get("disagree"))
+      self:addCardToActive(CardManager.get("stall-for-time"))
+      self:addCardToActive(CardManager.get("stall-for-time"))
       self:shuffle()
    end;
    addCardToActive = function(self, card)
@@ -25,7 +25,7 @@ Deck = Class{
 
       local counter = #self.cards
       while counter > 1 do
-          local index = math.random(counter)
+          local index = love.math.random(counter)
           self:swap(index, counter)
           counter = counter - 1
       end
@@ -34,7 +34,7 @@ Deck = Class{
       self.cards[index1], self.cards[index2] = self.cards[index2], self.cards[index1]
    end;
    reset = function(self)
-      self.cards = Util.concatTables(self.cards, self.used)
+      self.cards = Util.t.concat(self.cards, self.used)
       self.used = {}
       self:shuffle()
    end;
@@ -42,7 +42,7 @@ Deck = Class{
       if self.cards[#self.cards] then
          return self.cards[#self.cards]
       else
-         return nila
+         return nil
       end
    end;
    draw = function(self)

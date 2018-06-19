@@ -23,7 +23,7 @@ Opponent = Class {
    end;
    applyQualityDeltas = function(self, deltas)
       for k,v in pairs(self.qualities) do
-         if deltas[k] then
+         if deltas[k] ~= 0 then
             print("Modifying ".. k .. " by " .. deltas[k])
             self.qualities[k]:updateBy(deltas[k])
          end
