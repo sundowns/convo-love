@@ -19,8 +19,9 @@ local ACTION_HANDLER = function(event, data)
          data.opponent.qualities["Patience"]:updateBy(5)
          data.opponent.qualities["Trust"]:updateBy(2)
       end
-   elseif event == CARD_ACTION.debug then
+   elseif event == CARD_ACTION.discard then
    elseif event == CARD_ACTION.tick then
+   elseif event == CARD_ACTION.debug then
    end
 end
 

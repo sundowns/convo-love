@@ -1,6 +1,6 @@
 local NAME = "Terry"
 
-local opponent = Opponent(name)
+local opponent = Opponent(NAME)
 
 -- Starting Stats
 opponent.qualities["Patience"]:set(20)

@@ -13,9 +13,10 @@ local ACTION_HANDLER = function(event, data)
    assert(event, "Card action handler received nil event")
 
    if event == CARD_ACTION.activate then
-      print(NAME.. " Activated") 
-   elseif event == CARD_ACTION.debug then
+      print(NAME.. " Activated")
+   elseif event == CARD_ACTION.discard then
    elseif event == CARD_ACTION.tick then
+   elseif event == CARD_ACTION.debug then
    end
 end
 

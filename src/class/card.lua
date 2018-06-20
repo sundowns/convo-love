@@ -5,8 +5,9 @@
 
 CARD_ACTION = {
    activate = 1,
-   debug = 2,
-   tick = 3
+   discard = 2,
+   tick = 3,
+   debug = 4
 }
 
 Card = Class{
