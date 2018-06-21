@@ -7,6 +7,7 @@ local hand;
 local opponent;
 local deck;
 local turn;
+local traits = {};
 
 function conversation:init()
 end;
@@ -17,14 +18,18 @@ function conversation:enter(previous, values)
    opponent = values.opponent
    hand = Hand()
    hand:drawToMax(deck)
+
+   traits = opponent.traits --TODO: Replace this with a concatenation between player and opponent traits!
 end;
 
 function conversation:update(dt)
    turn:update(dt, {deck=deck,hand=hand,opponent=opponent,turn=turn})
-   --[[Check for win conditions? (we could do this in our traits,
-   but we might be better off pooling them and doing it in conversation).
-   e.g. what if we want to prevent one trait taking effect?
-   ]]
+
+   --TODO: We dont want to do this EVERY frame, we ACTUALLY want to do it once at the end of EACH turn state/phase!!
+   -- Create some kind of state-change hook/callback!
+   for k,v in pairs(traits) do
+      traits[k]:update(turn:getStateKey(), {opponent=opponent})
+   end
 end;
 
 function conversation:draw()

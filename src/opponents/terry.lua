@@ -10,8 +10,12 @@ opponent.qualities["Love"]:set(10)
 opponent.qualities["Pride"]:set(10)
 opponent.qualities["Trust"]:set(10)
 
+--Dialogue
 table.insert(opponent.dialogue, "Well howdy there partna'")
 table.insert(opponent.dialogue, "Shut up baby I know it")
 table.insert(opponent.dialogue, "Go on give Terry a kiss")
+
+--Traits
+table.insert(opponent.traits, TraitManager.get("mortal"))
 
 return opponent

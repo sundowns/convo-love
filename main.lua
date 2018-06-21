@@ -11,7 +11,9 @@ function love.load(t)
    constants = require "src.const"
    require("src.class.quality")
    require("src.class.card")
-   CardManager = require "src.cards"
+   require("src.class.trait")
+   CardManager = require "src.cardmanager"
+   TraitManager = require "src.traitmanager"
    require("src.class.deck")
    require("src.class.hand")
    require("src.conversation")

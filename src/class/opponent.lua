@@ -4,6 +4,7 @@ Opponent = Class {
       self.dialogue = {}
       self.qualities = {}
       self.currentDialogue = nil
+      self.traits = {}
       for i,v in ipairs(constants.QUALITIES) do
          self.qualities[v] = Quality(v, 0)
       end
