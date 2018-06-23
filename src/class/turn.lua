@@ -36,6 +36,7 @@ local stateMeta = {
 local STATES = {
    [1] = TurnState("DRAW", {
       update = function(dt, params)
+         -- do this in a cooler way eventually (atm its just instant, maybe use some tweening?)
          params.hand:drawToMax(params.deck)
          params.turn:next(params)
       end
@@ -51,6 +52,11 @@ local STATES = {
    [4] = TurnState("OPPONENT", {
       enter = function(params)
          params.opponent:selectDialogue()
+
+         -- Spoof opponent turn for now, TODO: remove
+         Timer.after(2, function()
+            params.turn:next(params)
+         end)
       end,
       exit = function(params)
       end
@@ -73,8 +79,20 @@ Turn = Class {
       end
    end;
    next = function(self, params)
+      -- Evaluate end conditions
+      for k,v in pairs(params.traits) do
+         local triggeredConditions = params.traits[k]:evaluate(params)
+         if #triggeredConditions > 0 then
+            -- TODO: use the returned data to determine whether to call win or lose callbacks
+            -- (how do we deal with a win and loss condition at the same time??)
+            params.callbacks.win(triggeredConditions)
+         end
+      end
+
+      -- Run end-of-phase custom logic (should this be before evaluations?)
       STATES[self.state]:exit(params)
 
+      -- Update state
       if STATES[self.state+1] then
          self.state = self.state + 1
       else
@@ -82,13 +100,11 @@ Turn = Class {
          self.turnCount = self.turnCount + 1
       end
 
-      --TODO: REMOVE--> Just mocking out opponent turn for now
-      if self.state == STATES["OPPONENT"] then
-         Timer.after(1, function()
-            self:next(params)
-         end)
+      for k,v in pairs(params.traits) do
+         params.traits[k]:update(params)
       end
 
+      -- Run state enter code
       STATES[self.state]:enter(params)
    end;
    stateIs = function(self, key)

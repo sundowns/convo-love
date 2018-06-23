@@ -3,7 +3,9 @@ local NAME = "MORTAL"
 --in future, they should have easy/recognizable icons
 --local ICON = ""
 
--- Conversation end triggers (win or lose) granted by this trait
+--[[ Conversation end triggers (win or lose) granted by this trait
+   Acceptable result paramters: "WIN", "LOSE"
+]]
 local END_TRIGGERS = {
    EndTrigger(30, ">", "Patience", "WIN") -- this should be a loss condition patience below a certain level (which should decrease each turn!)
 }

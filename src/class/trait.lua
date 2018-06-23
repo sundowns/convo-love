@@ -10,17 +10,26 @@ Trait = Class {
          self.launchHandler(params)
       end
    end;
-   update = function(self, event, params)
+   -- Called ONCE at the start of a new phase
+   update = function(self, params)
       if self.updateHandler then
-         self.updateHandler(event, params)
+         self.updateHandler(params.turn:getStateKey(), params)
       end
-
+   end;
+   -- Called ONCE at the VERY end of a phase
+   evaluate = function(self, params)
+      local results = {}
       for k,v in pairs(self.endTriggers) do
-         self.endTriggers[k]:evaluate(params.opponent.qualities)
+         local triggered = self.endTriggers[k]:evaluate(params.opponent.qualities)
+         if triggered then
+            results[#results+1] = triggered
+         end
       end
+      return results
    end;
 }
 
+--TODO: Render these in the conversation somehow so u know what ur working towards (maybe post UI?)
 EndTrigger = Class {
    init = function(self, value, operator, quality, result)
       assert(operator == ">" or operator == "=" or operator == "<")
@@ -29,6 +38,7 @@ EndTrigger = Class {
       self.quality = quality
       self.result = result
    end;
+   --This might need to receive more than qualities in future
    evaluate = function(self, qualities)
       assert(qualities)
       local triggered = false
@@ -42,7 +52,10 @@ EndTrigger = Class {
 
       if triggered then
          --TODO: Do something more meaningful here, return a table that can be evaluated in conversation?
-         print(self.result)
+         return {
+            result = self.result,
+            quality = self.quality
+         }
       end
    end;
 }

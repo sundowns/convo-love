@@ -3,16 +3,23 @@ require("src.class.turn")
 
 conversation = {}
 
+-- Our relevant objects
 local hand;
 local opponent;
 local deck;
 local turn;
 local traits = {};
 
+-- Booleans to make victory/defeat
+local won;
+local lost;
+
 function conversation:init()
 end;
 
 function conversation:enter(previous, values)
+   won = false;
+   lost = false;
    turn = Turn(values.playerFirst)
    deck = values.deck
    opponent = values.opponent
@@ -23,13 +30,7 @@ function conversation:enter(previous, values)
 end;
 
 function conversation:update(dt)
-   turn:update(dt, {deck=deck,hand=hand,opponent=opponent,turn=turn})
-
-   --TODO: We dont want to do this EVERY frame, we ACTUALLY want to do it once at the end of EACH turn state/phase!!
-   -- Create some kind of state-change hook/callback!
-   for k,v in pairs(traits) do
-      traits[k]:update(turn:getStateKey(), {opponent=opponent})
-   end
+   turn:update(dt, self:getContext())
 end;
 
 function conversation:draw()
@@ -44,13 +45,18 @@ function conversation:draw()
    hand:render(love.graphics.getWidth()/2-100, 5)
    opponent:render(10, love.graphics.getHeight()/2)
    turn:render(love.graphics.getWidth()/2, love.graphics.getHeight()/2-20)
+
+   if win then
+      love.graphics.print("U WIN : )", love.graphics.getWidth()/2, love.graphics.getHeight()*2/3)
+   elseif lose then
+      love.graphics.print("U LOSE : (", love.graphics.getWidth()/2, love.graphics.getHeight()*2/3)
+   end
 end;
 
 function conversation:playCard(index)
    local card = hand:remove(index)
    if not card then print("[ERROR] Attempted to play null card") return end
-   -- Likely to add more data as we add new cards, but lets not go overboard yet
-   card:activate({opponent=opponent, turn=turn})
+   card:activate(self:getContext())
    deck:addCardToUsed(card)
 end;
 
@@ -66,8 +72,31 @@ function conversation:discardDownTo(index)
 end;
 
 function conversation:nextPhase()
-   turn:next({deck=deck,hand=hand,opponent=opponent,turn=turn})
+   turn:next(self:getContext())
 end;
+
+function conversation:getContext()
+   return {
+      deck = deck,
+      hand = hand,
+      opponent = opponent,
+      turn = turn,
+      traits = traits,
+      callbacks = {
+         win = self.win,
+         lose = self.lose
+      }}
+end
+
+function conversation:win()
+   win = true
+   print("we won brutha")
+end
+
+function conversation:lose()
+   lose = true
+   print("LOSE")
+end
 
 function conversation:keypressed(key)
    if showDebug then
@@ -80,14 +109,16 @@ function conversation:keypressed(key)
       end
    end
 
-   if turn:stateIs("PLAY") then
-      if tonumber(key) then
-         conversation:playCard(tonumber(key))
-         conversation:nextPhase()
-      end
-   elseif turn:stateIs("DISCARD") then
-      if tonumber(key) then
-         conversation:discardDownTo(tonumber(key))
+   if not win and not lose then
+      if turn:stateIs("PLAY") then
+         if tonumber(key) then
+            conversation:playCard(tonumber(key))
+            conversation:nextPhase()
+         end
+      elseif turn:stateIs("DISCARD") then
+         if tonumber(key) then
+            conversation:discardDownTo(tonumber(key))
+         end
       end
    end
 end
