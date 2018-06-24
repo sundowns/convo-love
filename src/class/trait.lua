@@ -31,7 +31,7 @@ Trait = Class {
 
 --TODO: Render these in the conversation somehow so u know what ur working towards (maybe post UI?)
 EndTrigger = Class {
-   init = function(self, value, operator, quality, result)
+   init = function(self, quality, operator, value, result)
       assert(operator == ">" or operator == "=" or operator == "<")
       self.value = value
       self.operator = operator
@@ -51,7 +51,6 @@ EndTrigger = Class {
       end
 
       if triggered then
-         --TODO: Do something more meaningful here, return a table that can be evaluated in conversation?
          return {
             result = self.result,
             quality = self.quality

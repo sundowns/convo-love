@@ -90,12 +90,10 @@ end
 
 function conversation:win()
    win = true
-   print("we won brutha")
 end
 
 function conversation:lose()
    lose = true
-   print("LOSE")
 end
 
 function conversation:keypressed(key)

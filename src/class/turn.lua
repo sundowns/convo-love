@@ -80,12 +80,28 @@ Turn = Class {
    end;
    next = function(self, params)
       -- Evaluate end conditions
+      local endConditions = {}
       for k,v in pairs(params.traits) do
-         local triggeredConditions = params.traits[k]:evaluate(params)
-         if #triggeredConditions > 0 then
-            -- TODO: use the returned data to determine whether to call win or lose callbacks
-            -- (how do we deal with a win and loss condition at the same time??)
-            params.callbacks.win(triggeredConditions)
+         Util.table.concat(endConditions, params.traits[k]:evaluate(params))
+      end
+
+      if #endConditions > 0 then
+         -- TODO: use the returned data to determine whether to call win or lose callbacks
+         -- (how do we deal with a win and loss condition at the same time??)
+         local loss = false
+         local win = false
+         for k, v in pairs(endConditions) do
+            if v.result == "WIN" then
+               win = true
+            elseif v.result == "LOSE" then
+               loss = true
+            end
+         end
+
+         if win then
+            params.callbacks.win(endConditions)
+         elseif loss then
+            params.callbacks.lose(endConditions)
          end
       end
 

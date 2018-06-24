@@ -11,6 +11,8 @@ Deck = Class{
       self:addCardToActive(CardManager.get("disagree"))
       self:addCardToActive(CardManager.get("stall-for-time"))
       self:addCardToActive(CardManager.get("stall-for-time"))
+      self:addCardToActive(CardManager.get("sweet-talk"))
+      self:addCardToActive(CardManager.get("sweet-talk"))
       self:shuffle()
    end;
    addCardToActive = function(self, card)

@@ -1,4 +1,4 @@
-local NAME = "Mortal"
+local NAME = "Tragic"
 
 --in future, they should have easy/recognizable icons
 --local ICON = ""
@@ -7,7 +7,7 @@ local NAME = "Mortal"
    Acceptable result paramters: "WIN", "LOSE"
 ]]
 local END_TRIGGERS = {
-   EndTrigger("Patience", "<", 1, "LOSE")
+   EndTrigger("Love", ">", 5, "WIN")
 }
 
 --Called at the start of a conversation ONCE
@@ -20,7 +20,6 @@ local UPDATE_HANDLER = function(event, data)
    elseif event == "PLAY" then
    elseif event == "DISCARD" then
    elseif event == "OPPONENT" then
-      data.opponent.qualities["Patience"]:updateBy(-2)
    end
 end;
 
