@@ -20,16 +20,16 @@ Opponent = Class {
     love.graphics.print(self.name, x, y)
     love.graphics.setColor(1,0,1)
     for k,v in pairs(self.qualities) do
-      love.graphics.print(k..": "..v.value, x, y+220+count*15)
+      love.graphics.print(k..": "..v.value, x, y+240+count*15)
       count = count+1
     end
     if self.currentDialogue then
       love.graphics.setColor(1,0,0)
-      love.graphics.print(self.currentDialogue.text, x, y+200)
+      love.graphics.print(self.currentDialogue.text, x, y+220)
     end
     if self.assetsPath then
       Util.l.resetColour()
-      love.graphics.draw(Assets.opponents.frame, x, y, 0, 3, 3)
+      love.graphics.draw(Assets.opponents.frame, x, y+20, 0, 3, 3)
       love.graphics.draw(Assets[self.assetsPath][self.anim.currState..'-'..self.anim.currFrame], x, y, 0, 3, 3)
     end
   end;
@@ -41,6 +41,7 @@ Opponent = Class {
     end
   end;
   selectDialogue = function(self, params)
+    --TODO: Need some advanced method to prevent REPEATING dialogue (UNLESS its the ONLY option???)
     local pool = {}
     for i, v in pairs(self.dialogue) do
       if self.dialogue[i]:evaluate(params) then
