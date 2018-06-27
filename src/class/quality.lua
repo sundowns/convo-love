@@ -7,6 +7,7 @@ Quality = Class {
       self.value = self.startValue
    end;
    updateBy = function(self, delta)
+     print("Modifying ".. self.name .. " by " .. delta)
       self.value = self.value + delta
    end;
    set = function(self, absolute)

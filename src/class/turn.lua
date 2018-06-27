@@ -51,7 +51,7 @@ local STATES = {
    }),
    [4] = TurnState("OPPONENT", {
       enter = function(params)
-         params.opponent:selectDialogue()
+         params.opponent:selectDialogue(params)
 
          -- Spoof opponent turn for now, TODO: remove
          Timer.after(2, function()

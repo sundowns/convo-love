@@ -7,7 +7,7 @@ local NAME = "Mortal"
    Acceptable result paramters: "WIN", "LOSE"
 ]]
 local END_TRIGGERS = {
-   EndTrigger("Patience", "<", 1, "LOSE")
+   QualityTrigger("Patience", "<", 1, "LOSE")
 }
 
 --Called at the start of a conversation ONCE

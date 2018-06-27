@@ -9,7 +9,9 @@ function love.load(t)
    Timer = require "lib.timer"
    GamestateManager = require "lib.gamestate"
    constants = require "src.const"
+   require("src.class.dialogue")
    require("src.class.quality")
+   require("src.class.trigger")
    require("src.class.card")
    require("src.class.trait")
    CardManager = require "src.cardmanager"
