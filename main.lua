@@ -3,61 +3,63 @@ love.filesystem.setRequirePath( love.filesystem.getRequirePath()..";lib/?.lua;" 
 local deck = {}
 
 function love.load(t)
-   showDebug = false
-   Util = require "lib.util"
-   Class = require "lib.class"
-   Timer = require "lib.timer"
-   GamestateManager = require "lib.gamestate"
-   constants = require "src.const"
-   require("src.class.dialogue")
-   require("src.class.quality")
-   require("src.class.trigger")
-   require("src.class.card")
-   require("src.class.trait")
-   CardManager = require "src.cardmanager"
-   TraitManager = require "src.traitmanager"
-   require("src.class.deck")
-   require("src.class.hand")
-   require("src.conversation")
+  showDebug = false
+  Util = require "lib.util"
+  Class = require "lib.class"
+  Timer = require "lib.timer"
+  GamestateManager = require "lib.gamestate"
+  Assets = require("lib.cargo").init('assets')
+  constants = require ("src.const")
+  require("src.class.dialogue")
+  require("src.class.quality")
+  require("src.class.trigger")
+  require("src.class.card")
+  require("src.class.trait")
+  CardManager = require "src.cardmanager"
+  TraitManager = require "src.traitmanager"
+  require("src.class.deck")
+  require("src.class.hand")
+  require("src.conversation")
+  love.graphics.setDefaultFilter('nearest')
 
-   deck = Deck()
-   deck:populateStartingDeck();
+  deck = Deck()
+  deck:populateStartingDeck();
 
-   GamestateManager.registerEvents()
-   enterConversation("terry")
+  GamestateManager.registerEvents()
+  enterConversation("terry")
 end
 
 function love.update(dt)
-   Timer.update(dt)
+  Timer.update(dt)
 end
 
 function love.draw()
-   if showDebug then
-      Util.l.resetColour()
-      Util.l.renderStats()
-    end
+  if showDebug then
+    Util.l.resetColour()
+    Util.l.renderStats()
+  end
 end
 
 function love.keypressed(key, scancode, isrepeat)
-   if key == "f1" then
-      showDebug = not showDebug
-   elseif key == "f5" then
-      --https://www.lua.org/manual/5.1/manual.html#pdf-debug.debug
-      debug.debug()
-   elseif key == "escape" then
-      love.event.quit("restart")
-   end
+  if key == "f1" then
+    showDebug = not showDebug
+  elseif key == "f5" then
+    --https://www.lua.org/manual/5.1/manual.html#pdf-debug.debug
+    debug.debug()
+  elseif key == "escape" then
+    love.event.quit("restart")
+  end
 end
 
 function enterConversation(opponentKey)
-   if love.filesystem.getInfo("src/opponents/"..opponentKey..".lua") then
-      local opponent = love.filesystem.load("src/opponents/"..opponentKey..".lua")()
-      local values = {}
-      values.deck = deck
-      values.opponent = opponent
-      GamestateManager.switch(conversation, values)
-   else
-      --Probably bad practice to intentionally blue screen, like ever. Do something nicer
-      assert(false, "Attempted to load non existent opponent: "..opponentKey)
-   end
+  if love.filesystem.getInfo("src/opponents/"..opponentKey..".lua") then
+    local opponent = love.filesystem.load("src/opponents/"..opponentKey..".lua")()
+    local values = {}
+    values.deck = deck
+    values.opponent = opponent
+    GamestateManager.switch(conversation, values)
+  else
+    --Probably bad practice to intentionally blue screen, like ever. Do something nicer
+    assert(false, "Attempted to load non existent opponent: "..opponentKey)
+  end
 end

@@ -2,7 +2,7 @@
 Dialogue = Class {
   init = function(self, text, triggers)
     self.text = text
-    self.triggers = triggers
+    self.triggers = triggers or {}
   end;
   -- return true => to INCLUDE in dialogue pool
   -- return false => to EXCLUDE from dialogue pool

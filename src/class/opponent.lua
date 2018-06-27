@@ -1,6 +1,10 @@
 Opponent = Class {
-  init = function(self, name)
+  init = function(self, name, assetsPath)
     self.name = name
+    self.assetsPath = assetsPath
+    self.anim = {}
+    self.anim.currState = "base"
+    self.anim.currFrame = 0
     self.dialogue = {}
     self.qualities = {}
     self.currentDialogue = nil
@@ -16,12 +20,17 @@ Opponent = Class {
     love.graphics.print(self.name, x, y)
     love.graphics.setColor(1,0,1)
     for k,v in pairs(self.qualities) do
-      love.graphics.print(k..": "..v.value, x, y+50+count*15)
+      love.graphics.print(k..": "..v.value, x, y+220+count*15)
       count = count+1
     end
     if self.currentDialogue then
       love.graphics.setColor(1,0,0)
-      love.graphics.print(self.currentDialogue.text, x, y+20)
+      love.graphics.print(self.currentDialogue.text, x, y+200)
+    end
+    if self.assetsPath then
+      Util.l.resetColour()
+      love.graphics.draw(Assets.opponents.frame, x, y, 0, 3, 3)
+      love.graphics.draw(Assets[self.assetsPath][self.anim.currState..'-'..self.anim.currFrame], x, y, 0, 3, 3)
     end
   end;
   applyQualityDeltas = function(self, deltas)
