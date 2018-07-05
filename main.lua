@@ -8,6 +8,7 @@ function love.load(t)
   Class = require "lib.class"
   Timer = require "lib.timer"
   GamestateManager = require "lib.gamestate"
+  GamestateManager.registerEvents()
   nk = require 'nuklear'
   Assets = require("lib.cargo").init('assets')
   constants = require ("src.const")
@@ -27,7 +28,6 @@ function love.load(t)
   deck:populateStartingDeck();
 
   nk.init()
-  GamestateManager.registerEvents({"draw", "update", "keypressed", "quit"})
   enterConversation("terry")
 end
 
@@ -42,46 +42,6 @@ function love.draw()
   end
 end
 
-function love.keypressed(key, scancode, isrepeat)
-  local consumed = nk.keypressed(key, scancode, isrepeat)
-
-  if key == "f1" then
-    showDebug = not showDebug
-  elseif key == "f5" then
-    --https://www.lua.org/manual/5.1/manual.html#pdf-debug.debug
-    debug.debug()
-  elseif key == "escape" then
-    love.event.quit("restart")
-  end
-end
-
-function love.keyreleased(key, scancode)
-  local consumed = nk.keyreleased(key, scancode)
-end
-
-function love.mousepressed(x, y, button, istouch)
-	local consumed = nk.mousepressed(x, y, button, istouch)
-  if consumed then
-    print("nom nom")
-  end
-end
-
-function love.mousereleased(x, y, button, istouch)
-	local consumed = nk.mousereleased(x, y, button, istouch)
-end
-
-function love.mousemoved(x, y, dx, dy, istouch)
-	local consumed = nk.mousemoved(x, y, dx, dy, istouch)
-end
-
-function love.textinput(text)
-	local consumed = nk.textinput(text)
-end
-
-function love.wheelmoved(x, y)
-	local consumed = nk.wheelmoved(x, y)
-end
-
 function enterConversation(opponentKey)
   if love.filesystem.getInfo("src/opponents/"..opponentKey..".lua") then
     local opponent = love.filesystem.load("src/opponents/"..opponentKey..".lua")()
@@ -93,4 +53,51 @@ function enterConversation(opponentKey)
     --Probably bad practice to intentionally blue screen, like ever. Do something nicer
     assert(false, "Attempted to load non existent opponent: "..opponentKey)
   end
+end
+
+function love.keypressed(key, scancode, isrepeat)
+  if key == "f1" then
+    showDebug = not showDebug
+  elseif key == "f5" then
+    --https://www.lua.org/manual/5.1/manual.html#pdf-debug.debug
+    debug.debug()
+  elseif key == "escape" then
+    love.event.quit()
+  elseif key == "tab" then
+    love.event.quit("restart")
+  end
+
+  if nk.keypressed(key, scancode, isrepeat) then
+    return
+  end
+end
+
+function love.keyreleased(key, scancode)
+	if nk.keyreleased(key, scancode) then
+		return -- event consumed
+	end
+end
+
+function love.mousepressed(x, y, button, istouch)
+	if nk.mousepressed(x, y, button, istouch) then
+		return -- event consumed
+	end
+end
+
+function love.mousereleased(x, y, button, istouch)
+	if nk.mousereleased(x, y, button, istouch) then
+		return -- event consumed
+	end
+end
+
+function love.mousemoved(x, y, dx, dy, istouch)
+	if nk.mousemoved(x, y, dx, dy, istouch) then
+		return -- event consumed
+	end
+end
+
+function love.textinput(text)
+	if nk.textinput(text) then
+		return -- event consumed
+	end
 end

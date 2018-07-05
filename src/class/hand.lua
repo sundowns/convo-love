@@ -26,14 +26,5 @@ Hand = Class{
    count = function(self)
       return #self.cards
    end;
-   --x and y origins to render relative to
-   render = function(self, x, y)
-      local count = 0
-      love.graphics.setColor(1, 1, 0)
-      for i,card in ipairs(self.cards) do
-         love.graphics.print(i.." "..card.name, x, y+count*15)
-         count = count + 1
-      end
-   end;
 
 }
