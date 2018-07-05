@@ -86,8 +86,6 @@ Turn = Class {
       end
 
       if #endConditions > 0 then
-         -- TODO: use the returned data to determine whether to call win or lose callbacks
-         -- (how do we deal with a win and loss condition at the same time??)
          local loss = false
          local win = false
          for k, v in pairs(endConditions) do

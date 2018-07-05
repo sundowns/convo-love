@@ -1,4 +1,4 @@
-love.filesystem.setRequirePath( love.filesystem.getRequirePath()..";lib/?.lua;" )
+love.filesystem.setRequirePath( love.filesystem.getRequirePath()..";lib/?.lua;")
 
 local deck = {}
 
@@ -8,6 +8,7 @@ function love.load(t)
   Class = require "lib.class"
   Timer = require "lib.timer"
   GamestateManager = require "lib.gamestate"
+  nk = require 'nuklear'
   Assets = require("lib.cargo").init('assets')
   constants = require ("src.const")
   require("src.class.dialogue")
@@ -25,7 +26,8 @@ function love.load(t)
   deck = Deck()
   deck:populateStartingDeck();
 
-  GamestateManager.registerEvents()
+  nk.init()
+  GamestateManager.registerEvents({"draw", "update", "keypressed", "quit"})
   enterConversation("terry")
 end
 
@@ -41,6 +43,8 @@ function love.draw()
 end
 
 function love.keypressed(key, scancode, isrepeat)
+  local consumed = nk.keypressed(key, scancode, isrepeat)
+
   if key == "f1" then
     showDebug = not showDebug
   elseif key == "f5" then
@@ -49,6 +53,33 @@ function love.keypressed(key, scancode, isrepeat)
   elseif key == "escape" then
     love.event.quit("restart")
   end
+end
+
+function love.keyreleased(key, scancode)
+  local consumed = nk.keyreleased(key, scancode)
+end
+
+function love.mousepressed(x, y, button, istouch)
+	local consumed = nk.mousepressed(x, y, button, istouch)
+  if consumed then
+    print("nom nom")
+  end
+end
+
+function love.mousereleased(x, y, button, istouch)
+	local consumed = nk.mousereleased(x, y, button, istouch)
+end
+
+function love.mousemoved(x, y, dx, dy, istouch)
+	local consumed = nk.mousemoved(x, y, dx, dy, istouch)
+end
+
+function love.textinput(text)
+	local consumed = nk.textinput(text)
+end
+
+function love.wheelmoved(x, y)
+	local consumed = nk.wheelmoved(x, y)
 end
 
 function enterConversation(opponentKey)
