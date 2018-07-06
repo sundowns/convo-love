@@ -43,12 +43,12 @@ function conversation:update(dt)
       local width,height = nk.windowGetSize()
       nk.layoutRow('dynamic', math.floor(height*0.8), {0.1, 0.8, 0.1})
       if nk.button("Deck ["..#deck.cards.."]") then
-        -- if ui.toggles.show_deck then
-        --   ui:disable("show_deck")
-        -- else
-        --   ui:disable("show_used")
-        --   ui:enable("show_deck")
-        -- end
+        if ui.toggles.show_deck then
+          ui:disable("show_deck")
+        else
+          --ui:disable("show_used")
+          ui:enable("show_deck")
+        end
       end
       nk.label("")
       if nk.button("Discard ["..#deck.used.."]") then
@@ -130,7 +130,6 @@ function conversation:draw()
     love.graphics.print("[1,2,3..] Discard down to", 0, love.graphics.getHeight()-20)
   end
 
-  deck:render(10, 5)
   opponent:render(love.graphics.getWidth()*0.4, 0)
   turn:render(love.graphics.getWidth()/2, love.graphics.getHeight()/2-20)
 

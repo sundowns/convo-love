@@ -55,15 +55,4 @@ Deck = Class{
          return table.remove(self.cards, #self.cards)
       end
    end;
-   --Renderer function
-   --x and y origins to render relative to
-   render = function(self, x, y)
-      -- Draw used pile
-      love.graphics.setColor(1, 0, 0)
-      count = 0
-      for k,card in pairs(self.used) do
-         love.graphics.print(card.name, x+love.graphics.getWidth()-100, y+count*15)
-         count = count + 1
-      end
-   end;
 }
