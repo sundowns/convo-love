@@ -127,10 +127,10 @@ function conversation:draw()
   if turn:stateIs("PLAY") then
     love.graphics.print("[1,2,3..] Play from hand", love.graphics.getWidth()/2, love.graphics.getHeight()/2)
   elseif turn:stateIs("DISCARD") then
-    love.graphics.print("[1,2,3..] Discard down to", 0, love.graphics.getHeight()-20)
+    love.graphics.print("[1,2,3..] Discard down to", love.graphics.getWidth()/2, love.graphics.getHeight()/2)
   end
 
-  opponent:render(love.graphics.getWidth()*0.4, 0)
+  opponent:render(love.graphics.getWidth()*0.4, love.graphics.getHeight()*0.05)
   turn:render(love.graphics.getWidth()/2, love.graphics.getHeight()/2-20)
 
   if win then
