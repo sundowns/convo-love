@@ -11,6 +11,11 @@ opponent.qualities["Love"]:set(0)
 opponent.qualities["Pride"]:set(10)
 opponent.qualities["Trust"]:set(10)
 
+-- Altered stat ranges (Defaults 0 -> 100)
+opponent.qualities["Patience"]:setMax(50)
+opponent.qualities["Love"]:setMax(10)
+
+
 -- Dialogue options and their triggers
 --TODO: Be able to do more complex triggers (namely OR/ANY)
 table.insert(opponent.dialogue, Dialogue("What can I do for ya today?", { TurnCountTrigger("=", 1, "OK") }))

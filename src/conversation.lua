@@ -39,7 +39,7 @@ function conversation:update(dt)
   nk.frameBegin()
     -- BASE UI
     -- Header bar
-    if nk.windowBegin("header", 0, 0, love.graphics.getWidth(), love.graphics.getHeight()*0.05) then
+    if nk.windowBegin("header", 0, 0, love.graphics.getWidth(), love.graphics.getHeight()*ui.constants.header_height) then
       local width,height = nk.windowGetSize()
       nk.layoutRow('dynamic', math.floor(height*0.8), {0.1, 0.8, 0.1})
       if nk.button("Deck ["..#deck.cards.."]") then
@@ -63,7 +63,7 @@ function conversation:update(dt)
     nk.windowEnd()
 
     -- Player Hand
-    if nk.windowBegin("handWindow", 0, love.graphics.getHeight()*constants.UI.HAND_HEIGHT, love.graphics.getWidth(), love.graphics.getHeight()*(1-constants.UI.HAND_HEIGHT)) then
+    if nk.windowBegin("handWindow", 0, love.graphics.getHeight()*(1-ui.constants.hand_height), love.graphics.getWidth(), love.graphics.getHeight()*ui.constants.hand_height) then
       local width, height = nk.windowGetSize()
       nk.layoutRow('dynamic', math.floor(height*.95), #hand.cards)
         for i, card in ipairs(hand.cards) do
@@ -82,16 +82,29 @@ function conversation:update(dt)
     end
     nk.windowEnd() -- End Player Hand
 
+    -- Opponent Window
+    if nk.windowBegin("qualitiesWindow", 0, ui:fromHeight("header_height"), ui:fromWidth("qualities_width"), ui:fromHeight("qualities_height")) then
+      local width, height = nk.windowGetSize()
+      local rowHeight = math.floor(height/#constants.QUALITIES*0.925)
+      for k, v in pairs(opponent.qualities) do
+        nk.layoutRow('dynamic', rowHeight, {0.3, 0.7})
+        nk.label(k.." ["..v.value.."]")
+        --TODO: Try using nuklear's free drawing functions to make these nicer!
+        local current = nk.progress(v.value, v.maxValue)
+      end
+    end
+    nk.windowEnd() -- End Opponent Window
+
     -- OVERLAYS
     -- Deck Overlay
     if ui.toggles.show_deck then
       if nk.windowBegin("deckWindow", love.graphics.getWidth()*0.1, love.graphics.getHeight()*0.1, love.graphics.getWidth()*0.8, love.graphics.getHeight()*0.8) then
         local width, height = nk.windowGetSize()
-        local rows = math.ceil(#deck.cards/ui.values.deck_items_per_row)
+        local rows = math.ceil(#deck.cards/ui.constants.deck_items_per_row)
         local count = 0
         for k, card in pairs(deck.cards) do
-          if count % ui.values.deck_items_per_row == 0 then
-            nk.layoutRow('dynamic', math.floor(height*0.9)/rows, ui.values.deck_items_per_row)
+          if count % ui.constants.deck_items_per_row == 0 then
+            nk.layoutRow('dynamic', math.floor(height*0.9)/rows, ui.constants.deck_items_per_row)
           end
           nk.label(card.name)
           count = count + 1
@@ -104,11 +117,11 @@ function conversation:update(dt)
     if ui.toggles.show_used then
       if nk.windowBegin("discardWindow", love.graphics.getWidth()*0.1, love.graphics.getHeight()*0.1, love.graphics.getWidth()*0.8, love.graphics.getHeight()*0.8) then
         local width, height = nk.windowGetSize()
-        local rows = math.ceil(#deck.used/ui.values.deck_items_per_row)
+        local rows = math.ceil(#deck.used/ui.constants.deck_items_per_row)
         local count = 0
         for k, card in pairs(deck.used) do
-          if count % ui.values.deck_items_per_row == 0 then
-            nk.layoutRow('dynamic', math.floor(height*0.9)/rows, ui.values.deck_items_per_row)
+          if count % ui.constants.deck_items_per_row == 0 then
+            nk.layoutRow('dynamic', math.floor(height*0.9)/rows, ui.constants.deck_items_per_row)
           end
           nk.label(card.name)
           count = count + 1

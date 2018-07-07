@@ -11,8 +11,5 @@ return {
     "Love",
     "Pride",
     "Trust"
-  },
-  UI = {
-    HAND_HEIGHT = 0.7
   }
 }

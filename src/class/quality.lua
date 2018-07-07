@@ -13,4 +13,10 @@ Quality = Class {
    set = function(self, absolute)
       self.value = absolute
    end;
+   setMax = function(self, max)
+     self.maxValue = max
+   end;
+   setMin = function(self, min)
+     self.minValue = min
+   end;
 }
