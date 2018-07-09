@@ -127,10 +127,6 @@ Turn = Class {
    getStateKey = function(self)
       return STATES[self.state].key
    end;
-   render = function(self, x, y)
-      love.graphics.setColor(0,0.6,1)
-      love.graphics.print("TURN "..self.turnCount..": "..self:getStateKey(), x, y)
-   end;
    update = function(self, dt, params)
       STATES[self.state]:update(dt, params)
    end

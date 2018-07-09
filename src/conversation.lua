@@ -1,7 +1,3 @@
-require("src.class.opponent")
-require("src.class.turn")
-
-
 conversation = {}
 
 -- Our relevant objects
@@ -19,6 +15,8 @@ local won
 local lost
 
 function conversation:init()
+  local textBoxYOffset = ui:fromHeight("header_height") + ui:fromHeight("qualities_height")
+  Moan.setBoxBounds(0, textBoxYOffset, ui:fromWidth("textbox_width"), ui:fromHeight("textbox_height"))
 end;
 
 function conversation:enter(previous, values)
@@ -35,6 +33,7 @@ end
 
 function conversation:update(dt)
   turn:update(dt, self:getContext())
+  opponent:update(dt)
 
   nk.frameBegin()
     -- BASE UI
@@ -50,7 +49,7 @@ function conversation:update(dt)
           ui:enable("show_deck")
         end
       end
-      nk.label("")
+      nk.label("TURN "..turn.turnCount..": "..turn:getStateKey(), "centered")
       if nk.button("Discard ["..#deck.used.."]") then
         -- if ui.toggles.show_used then
         --   ui:disable("show_used")
@@ -63,7 +62,7 @@ function conversation:update(dt)
     nk.windowEnd()
 
     -- Player Hand
-    if nk.windowBegin("handWindow", 0, love.graphics.getHeight()*(1-ui.constants.hand_height), love.graphics.getWidth(), love.graphics.getHeight()*ui.constants.hand_height) then
+    if nk.windowBegin("handWindow", 0, love.graphics.getHeight()*(1-ui.constants.hand_height), love.graphics.getWidth(), love.graphics.getHeight()*ui.constants.hand_height, 'border') then
       local width, height = nk.windowGetSize()
       nk.layoutRow('dynamic', math.floor(height*.95), #hand.cards)
         for i, card in ipairs(hand.cards) do
@@ -82,8 +81,14 @@ function conversation:update(dt)
     end
     nk.windowEnd() -- End Player Hand
 
-    -- Opponent Window
-    if nk.windowBegin("qualitiesWindow", 0, ui:fromHeight("header_height"), ui:fromWidth("qualities_width"), ui:fromHeight("qualities_height")) then
+    -- Card Window
+    if nk.windowBegin("cardWindow", 0, ui:fromHeight("header_height"), ui:fromWidth("card_width"), ui:fromHeight("card_height")) then
+
+    end
+    nk.windowEnd() -- End Card Window
+
+    -- Qualities Window
+    if nk.windowBegin("qualitiesWindow", ui:fromWidth("card_width"), ui:fromHeight("header_height"), ui:fromWidth("qualities_width"), ui:fromHeight("qualities_height")) then
       local width, height = nk.windowGetSize()
       local rowHeight = math.floor(height/#constants.QUALITIES*0.925)
       for k, v in pairs(opponent.qualities) do
@@ -93,7 +98,29 @@ function conversation:update(dt)
         local current = nk.progress(v.value, v.maxValue)
       end
     end
-    nk.windowEnd() -- End Opponent Window
+    nk.windowEnd() -- End Qualities Window
+
+    -- Traits Window
+    if nk.windowBegin("traitsWindow", ui:fromWidth("qualities_width") + ui:fromWidth("card_width"), ui:fromHeight("header_height"), ui:fromWidth("traits_width"), ui:fromHeight("traits_height")) then
+
+    end
+    nk.windowEnd() -- End Traits Window
+
+    -- Name Window
+    if nk.windowBegin("nameWindow", ui:fromWidth("qualities_width") + ui:fromWidth("card_width") + ui:fromWidth("traits_width"), ui:fromHeight("header_height"), ui:fromWidth("name_width"), ui:fromHeight("name_height")) then
+      local x, y, width, height = nk.windowGetBounds()
+      nk.text(opponent.name, x + width/3, y+height/3, width, height)
+    end
+    nk.windowEnd() -- End Name Window
+
+    -- Opponent Portait Window
+    if nk.windowBegin("portraitWindow", ui:fromWidth("qualities_width") + ui:fromWidth("card_width") + ui:fromWidth("traits_width"), ui:fromHeight("header_height") + ui:fromHeight("name_height"), ui:fromHeight("portrait_edge"), ui:fromHeight("portrait_edge")) then
+      local width, height = nk.windowGetSize()
+      if opponent.anim.image then
+        nk.image(opponent.anim.image, nk.windowGetBounds())
+      end
+    end
+    nk.windowEnd() -- End Potrait Window
 
     -- OVERLAYS
     -- Deck Overlay
@@ -112,7 +139,6 @@ function conversation:update(dt)
       end
       nk.windowEnd() -- End Deck Overlay
     end
-
     -- Discard Pile Overlay
     if ui.toggles.show_used then
       if nk.windowBegin("discardWindow", love.graphics.getWidth()*0.1, love.graphics.getHeight()*0.1, love.graphics.getWidth()*0.8, love.graphics.getHeight()*0.8) then
@@ -134,17 +160,9 @@ function conversation:update(dt)
 end
 
 function conversation:draw()
+  Util.love.resetColour()
+  Moan:draw()
   nk.draw()
-
-  love.graphics.setColor(0,1,1)
-  if turn:stateIs("PLAY") then
-    love.graphics.print("[1,2,3..] Play from hand", love.graphics.getWidth()/2, love.graphics.getHeight()/2)
-  elseif turn:stateIs("DISCARD") then
-    love.graphics.print("[1,2,3..] Discard down to", love.graphics.getWidth()/2, love.graphics.getHeight()/2)
-  end
-
-  opponent:render(love.graphics.getWidth()*0.4, love.graphics.getHeight()*0.05)
-  turn:render(love.graphics.getWidth()/2, love.graphics.getHeight()/2-20)
 
   if win then
     love.graphics.print("U WIN : )", love.graphics.getWidth()/2, love.graphics.getHeight()*2/3)
@@ -152,6 +170,8 @@ function conversation:draw()
     love.graphics.print("U LOSE : (", love.graphics.getWidth()/2, love.graphics.getHeight()*2/3)
   end
 
+  --Reset colour to prepare for immediate UI
+  Util.love.resetColour()
 end
 
 function conversation:playCard(index)

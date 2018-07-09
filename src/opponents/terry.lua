@@ -25,7 +25,7 @@ table.insert(opponent.dialogue, Dialogue("Sorry pal but you are puuuutting me to
 table.insert(opponent.dialogue, Dialogue("ZZZzzzzzz.....", { QualityTrigger("Patience", "<", 5, "OK")}))
 
 --Set the initial dialogue
-opponent.currentDialogue = Dialogue("Well howdy there partna'")
+opponent:initialDialogue("Well howdy there partna'")
 
 --Traits
 table.insert(opponent.traits, TraitManager.get("mortal"))

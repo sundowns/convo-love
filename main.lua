@@ -4,13 +4,16 @@ local deck = {}
 
 function love.load(t)
   showDebug = false
+  -- Libraries
   Util = require "lib.util"
   Class = require "lib.class"
   Timer = require "lib.timer"
   GamestateManager = require "lib.gamestate"
   GamestateManager.registerEvents()
   nk = require 'nuklear'
+  Moan = require('Moan')
   Assets = require("lib.cargo").init('assets')
+
   constants = require ("src.const")
   require("src.class.dialogue")
   require("src.class.quality")
@@ -21,6 +24,8 @@ function love.load(t)
   TraitManager = require "src.traitmanager"
   require("src.class.deck")
   require("src.class.hand")
+  require("src.class.opponent")
+  require("src.class.turn")
   require("src.conversation")
   love.graphics.setDefaultFilter('nearest')
 
@@ -33,6 +38,7 @@ end
 
 function love.update(dt)
   Timer.update(dt)
+  Moan.update(dt)
 end
 
 function love.draw()

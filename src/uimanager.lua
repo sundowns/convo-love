@@ -6,11 +6,19 @@ local toggles = {
 local constants = {
   ["deck_items_per_row"] = 5, -- 5 cards per row in overlays
   ["header_height"] = 0.05, --5% of screen height
-  ["hand_height"] = 0.25, --70% of screen height
+  ["hand_height"] = 0.30, --30% of screen height
+  ["card_height"] = 0.5, --50% of screen height
+  ["card_width"] = 0.265, --20% of screen height
   ["qualities_height"] = 0.5, -- 50% of screen height
-  ["qualities_width"] = 0.35 -- 35% "
+  ["qualities_width"] = 0.35, -- 35%
+  ["portrait_edge"] = 0.45, -- 45% (Portraits should be square)
+  ["name_height"] = 0.05, -- 5%
+  ["name_width"] = 0.45, -- 45%
+  ["traits_height"] = 0.5, -- 50%
+  ["traits_width"] = 0.05, -- 5%
+  ["textbox_width"] = 1, -- 100%
+  ["textbox_height"] = 0.15, -- 15%
 }
-
 
 UIManager = Class {
   init = function(self, toggles, constants)
