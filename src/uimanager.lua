@@ -18,6 +18,10 @@ local constants = {
   ["traits_width"] = 0.05, -- 5%
   ["textbox_width"] = 1, -- 100%
   ["textbox_height"] = 0.15, -- 15%
+  ["deck_overlay_width"] = 0.80, -- 80%
+  ["deck_overlay_height"] = 0.80, -- 80%
+  ["discard_overlay_width"] = 0.80, -- 80%
+  ["discard_overlay_height"] = 0.80, -- 80%
 }
 
 UIManager = Class {

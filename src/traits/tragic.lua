@@ -1,5 +1,5 @@
 local NAME = "Tragic"
-
+local ASSETS_PATH = "/traits/tragic/"
 --in future, they should have easy/recognizable icons
 --local ICON = ""
 
@@ -24,4 +24,4 @@ local UPDATE_HANDLER = function(event, data)
 end;
 
 
-return Trait(NAME, LAUNCH_HANDLER, UPDATE_HANDLER, END_TRIGGERS)
+return Trait(NAME, LAUNCH_HANDLER, UPDATE_HANDLER, END_TRIGGERS, ASSETS_PATH)

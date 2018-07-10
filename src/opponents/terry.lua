@@ -18,11 +18,11 @@ opponent.qualities["Love"]:setMax(10)
 
 -- Dialogue options and their triggers
 --TODO: Be able to do more complex triggers (namely OR/ANY)
-table.insert(opponent.dialogue, Dialogue("What can I do for ya today?", { TurnCountTrigger("=", 1, "OK") }))
+table.insert(opponent.dialogue, Dialogue({text="What can I do for ya today?"}, { TurnCountTrigger("=", 1, "OK") }))
 table.insert(opponent.dialogue, Dialogue("Shut up baby I know it",  { TurnCountTrigger(">", 1, "OK"), QualityTrigger("Patience", ">", 9, "OK") }))
 table.insert(opponent.dialogue, Dialogue("Go on give Terry a kiss", { QualityTrigger("Love", ">", 4, "OK"), QualityTrigger("Patience", ">", 9, "OK")}))
-table.insert(opponent.dialogue, Dialogue("Sorry pal but you are puuuutting me to sleep", { QualityTrigger("Patience", "<", 10, "OK"), QualityTrigger("Patience", ">", 4, "OK")}))
-table.insert(opponent.dialogue, Dialogue("ZZZzzzzzz.....", { QualityTrigger("Patience", "<", 5, "OK")}))
+table.insert(opponent.dialogue, Dialogue({"Sorry pal but you are puuuutting me to sleep", speed="xslow"}, { QualityTrigger("Patience", "<", 10, "OK"), QualityTrigger("Patience", ">", 4, "OK")}))
+table.insert(opponent.dialogue, Dialogue({text="ZZZZZZZzzzzzzzzzzzz...........", speed="xxslow"}, { QualityTrigger("Patience", "<", 5, "OK")}))
 
 --Set the initial dialogue
 opponent:initialDialogue("Well howdy there partna'")

@@ -9,11 +9,11 @@ return {
     HEIGHT = 64
   },
   QUALITIES = {
-    "Patience",
-    "Happiness",
-    "Anger",
-    "Love",
-    "Pride",
-    "Trust"
+    {name="Patience", colour="#bbbbbb"},
+    {name="Happiness", colour="#fce000"},
+    {name="Anger", colour="#fc0000"},
+    {name="Love", colour="#fc8ae0"},
+    {name="Pride", colour="#00a9ff"},
+    {name="Trust", colour="#00c403"}
   }
 }

@@ -92,17 +92,27 @@ function conversation:update(dt)
       local width, height = nk.windowGetSize()
       local rowHeight = math.floor(height/#constants.QUALITIES*0.925)
       for k, v in pairs(opponent.qualities) do
-        nk.layoutRow('dynamic', rowHeight, {0.3, 0.7})
-        nk.label(k.." ["..v.value.."]")
-        --TODO: Try using nuklear's free drawing functions to make these nicer!
-        local current = nk.progress(v.value, v.maxValue)
+        nk.layoutRow('dynamic', rowHeight, {0.20, 0.6, 0.20})
+        nk.stylePush({
+          ["text"] = {
+            ["color"] = v.colour
+          },
+          ["progress"] = {
+            ["cursor normal"] = v.colour
+          }
+        })
+          nk.label(k)
+          --TODO: Try using nuklear's free drawing functions to make these nicer!
+          local current = nk.progress(v.value, v.maxValue)
+          nk.label("["..v.value.."/"..v.maxValue.."]", 'right')
+        nk.stylePop()
       end
     end
     nk.windowEnd() -- End Qualities Window
 
     -- Traits Window
     if nk.windowBegin("traitsWindow", ui:fromWidth("qualities_width") + ui:fromWidth("card_width"), ui:fromHeight("header_height"), ui:fromWidth("traits_width"), ui:fromHeight("traits_height")) then
-
+      nk.image(opponent.traits[1].image, nk.windowGetBounds())
     end
     nk.windowEnd() -- End Traits Window
 
@@ -115,7 +125,6 @@ function conversation:update(dt)
 
     -- Opponent Portait Window
     if nk.windowBegin("portraitWindow", ui:fromWidth("qualities_width") + ui:fromWidth("card_width") + ui:fromWidth("traits_width"), ui:fromHeight("header_height") + ui:fromHeight("name_height"), ui:fromHeight("portrait_edge"), ui:fromHeight("portrait_edge")) then
-      local width, height = nk.windowGetSize()
       if opponent.anim.image then
         nk.image(opponent.anim.image, nk.windowGetBounds())
       end
@@ -125,7 +134,7 @@ function conversation:update(dt)
     -- OVERLAYS
     -- Deck Overlay
     if ui.toggles.show_deck then
-      if nk.windowBegin("deckWindow", love.graphics.getWidth()*0.1, love.graphics.getHeight()*0.1, love.graphics.getWidth()*0.8, love.graphics.getHeight()*0.8) then
+      if nk.windowBegin("deckWindow", love.graphics.getWidth()*0.1, love.graphics.getHeight()*0.1, ui:fromWidth("deck_overlay_width"), ui:fromHeight("deck_overlay_height")) then
         local width, height = nk.windowGetSize()
         local rows = math.ceil(#deck.cards/ui.constants.deck_items_per_row)
         local count = 0
@@ -133,7 +142,7 @@ function conversation:update(dt)
           if count % ui.constants.deck_items_per_row == 0 then
             nk.layoutRow('dynamic', math.floor(height*0.9)/rows, ui.constants.deck_items_per_row)
           end
-          nk.label(card.name)
+          nk.label(card.name, "centered")
           count = count + 1
         end
       end
@@ -141,7 +150,7 @@ function conversation:update(dt)
     end
     -- Discard Pile Overlay
     if ui.toggles.show_used then
-      if nk.windowBegin("discardWindow", love.graphics.getWidth()*0.1, love.graphics.getHeight()*0.1, love.graphics.getWidth()*0.8, love.graphics.getHeight()*0.8) then
+      if nk.windowBegin("discardWindow", love.graphics.getWidth()*0.1, love.graphics.getHeight()*0.1, ui:fromWidth("discard_overlay_width"), ui:fromHeight("discard_overlay_height")) then
         local width, height = nk.windowGetSize()
         local rows = math.ceil(#deck.used/ui.constants.deck_items_per_row)
         local count = 0
@@ -149,7 +158,7 @@ function conversation:update(dt)
           if count % ui.constants.deck_items_per_row == 0 then
             nk.layoutRow('dynamic', math.floor(height*0.9)/rows, ui.constants.deck_items_per_row)
           end
-          nk.label(card.name)
+          nk.label(card.name, "centered")
           count = count + 1
         end
       end

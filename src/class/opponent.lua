@@ -12,14 +12,7 @@ Opponent = Class {
     self.currentDialogue = nil
     self.traits = {}
     for i,v in ipairs(constants.QUALITIES) do
-       self.qualities[v] = Quality(v, 0)
-    end
-  end;
-  --x and y origins to render relative to
-  render = function(self, x, y)
-    if self.currentDialogue then
-      love.graphics.setColor(1,0,0)
-      love.graphics.print(self.currentDialogue.text, x, y+450)
+       self.qualities[v.name] = Quality(v.name, v.colour, 0)
     end
   end;
   applyQualityDeltas = function(self, deltas)
@@ -30,7 +23,7 @@ Opponent = Class {
     end
   end;
   selectDialogue = function(self, params)
-    --TODO: Need some advanced method to prevent REPEATING dialogue (UNLESS its the ONLY option???)
+    self.lastDialogue = self.currentDialogue
     local pool = {}
     for i, v in pairs(self.dialogue) do
       if self.dialogue[i]:evaluate(params) then
@@ -38,12 +31,15 @@ Opponent = Class {
       end
     end
     self.currentDialogue = pool[love.math.random(1,#pool)]
-    Moan.clearMessages()
-    Moan.speak({"", {255,0,0}}, {self.currentDialogue.text}, {x=10,y=10})
+    -- Dont repeat dialogue unless there's only 1
+    while self.currentDialogue == self.lastDialogue and #pool > 1 do
+      self.currentDialogue = pool[love.math.random(1,#pool)]
+    end
+    self:speak(self.currentDialogue)
   end;
   initialDialogue = function(self, text)
     self.currentDialogue = Dialogue(text)
-    Moan.speak({"", {255,0,0}}, {self.currentDialogue.text}, {x=200,y=200})
+    self:speak(self.currentDialogue)
   end;
   update = function(self, dt)
     --TODO: update animation before this
@@ -52,6 +48,16 @@ Opponent = Class {
     end
 
     self.anim.lastFrame = self.anim.currFrame
+  end;
+  speak = function(self, dialogue)
+    Moan.clearMessages()
+    Moan.setSpeed(dialogue.text.speed)
+    Moan.speak({"", {255,0,0}}, {dialogue.text.text}, {
+      onstart=function()
+      end,
+      oncomplete=function()
+      end
+    })
   end;
   buildPortrait = function(self)
     local canvas = love.graphics.newCanvas(constants.PORTRAIT.WIDTH, constants.PORTRAIT.HEIGHT)
