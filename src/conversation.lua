@@ -112,7 +112,14 @@ function conversation:update(dt)
 
     -- Traits Window
     if nk.windowBegin("traitsWindow", ui:fromWidth("qualities_width") + ui:fromWidth("card_width"), ui:fromHeight("header_height"), ui:fromWidth("traits_width"), ui:fromHeight("traits_height")) then
-      nk.image(opponent.traits[1].image, nk.windowGetBounds())
+      local x, y, width, height = nk.windowGetBounds()
+      for i, v in ipairs(traits) do
+        if i % 2 == 1 then
+          nk.layoutRow('dynamic', width/2, 2)
+        end
+        --TODO: Calculate proper x,y coordinates xoxo
+        nk.image(traits[i].image, x, y, width/2, width/2)
+      end
     end
     nk.windowEnd() -- End Traits Window
 
